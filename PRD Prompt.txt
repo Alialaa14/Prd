@@ -1,0 +1,611 @@
+You are a Principal Software Architect, Senior Product Manager, Technical Lead, and Engineering Manager with over 20 years of experience building enterprise SaaS systems.
+
+Your task is to produce COMPLETE software documentation for this project.
+
+Do NOT summarize anything.
+Do NOT skip details.
+If information is missing, ask questions before making assumptions.
+
+The documentation must be written professionally as if it will be delivered to:
+
+• Backend Developers
+• Frontend Developers
+• QA Engineers
+• DevOps
+• UI/UX Designers
+• Product Owner
+• Stakeholders
+
+The documentation should become the single source of truth for the project.
+
+====================================================
+PROJECT INPUT
+====================================================
+
+I will provide:
+
+• Business Requirements
+• Existing README
+• Database Schema
+• ERD
+• UI Designs
+• API Draft
+• User Stories
+• Existing Code
+• Notes
+
+Use ALL of them to build the documentation.
+
+====================================================
+OUTPUT FORMAT
+====================================================
+
+Generate the documentation in separate phases.
+
+DO NOT continue automatically.
+Wait for me to approve each phase.
+
+====================================================
+PHASE 1
+PROJECT OVERVIEW
+====================================================
+
+Include:
+
+1. Executive Summary
+
+2. Business Goals
+
+3. Problem Statement
+
+4. Target Users
+
+5. User Roles
+
+For every role explain:
+
+- Responsibilities
+- Permissions
+- Limitations
+- Dashboard
+- Main Workflow
+
+6. Business Rules
+
+7. Assumptions
+
+8. Constraints
+
+9. Success Metrics
+
+10. Glossary
+
+====================================================
+PHASE 2
+FUNCTIONAL REQUIREMENTS
+====================================================
+
+For EVERY module produce:
+
+Module Name
+
+Purpose
+
+Actors
+
+Preconditions
+
+Postconditions
+
+Triggers
+
+Main Flow
+
+Alternative Flows
+
+Edge Cases
+
+Validation Rules
+
+Business Rules
+
+Dependencies
+
+Error Cases
+
+Acceptance Criteria
+
+Priority
+
+Estimated Complexity
+
+====================================================
+PHASE 3
+NON-FUNCTIONAL REQUIREMENTS
+====================================================
+
+Cover ALL of the following:
+
+Performance
+
+Scalability
+
+Security
+
+Availability
+
+Reliability
+
+Maintainability
+
+Extensibility
+
+Logging
+
+Monitoring
+
+Rate Limiting
+
+Authentication
+
+Authorization
+
+Encryption
+
+Data Retention
+
+Backups
+
+Caching
+
+Message Queues
+
+Audit Logs
+
+Accessibility
+
+Localization
+
+SEO (if applicable)
+
+API Versioning
+
+Deployment
+
+Containerization
+
+CI/CD
+
+Testing Strategy
+
+Coding Standards
+
+Error Handling
+
+====================================================
+PHASE 4
+DATABASE DOCUMENTATION
+====================================================
+
+Document every table.
+
+For each table include:
+
+Purpose
+
+Columns
+
+Relationships
+
+Indexes
+
+Constraints
+
+Unique Keys
+
+Foreign Keys
+
+Validation Rules
+
+Lifecycle
+
+Soft Delete Policy
+
+Audit Fields
+
+====================================================
+PHASE 5
+API DOCUMENTATION
+====================================================
+
+For EVERY endpoint document:
+
+Endpoint Name
+
+Purpose
+
+HTTP Method
+
+Route
+
+Authentication
+
+Authorization
+
+Headers
+
+Request Parameters
+
+Query Parameters
+
+Path Parameters
+
+Request Body
+
+Validation Rules
+
+Example Request
+
+Success Response
+
+Failure Responses
+
+Status Codes
+
+Returned JSON
+
+Example Payload
+
+Business Logic
+
+Database Operations
+
+Side Effects
+
+Events Triggered
+
+Notifications Sent
+
+Cache Behaviour
+
+Rate Limits
+
+Swagger Description
+
+OpenAPI Schema
+
+====================================================
+PHASE 6
+SYSTEM WORKFLOWS
+====================================================
+
+Produce Mermaid diagrams for:
+
+Authentication
+
+Registration
+
+Password Reset
+
+User Journey
+
+Admin Workflow
+
+Order Workflow
+
+Notification Workflow
+
+Payment Workflow
+
+Messaging Workflow
+
+Background Jobs
+
+Cron Jobs
+
+Data Flow
+
+Request Lifecycle
+
+====================================================
+PHASE 7
+FEATURE BREAKDOWN
+====================================================
+
+Break the project into implementation features.
+
+Example:
+
+Authentication
+
+Profile
+
+Products
+
+Orders
+
+Payments
+
+Notifications
+
+Search
+
+Admin
+
+Analytics
+
+etc.
+
+For EVERY feature provide:
+
+Description
+
+Dependencies
+
+Backend Tasks
+
+Frontend Tasks
+
+Database Tasks
+
+Testing Tasks
+
+Estimated Difficulty
+
+Estimated Story Points
+
+====================================================
+PHASE 8
+PROJECT TIMELINE
+====================================================
+
+Assume there are exactly
+
+3 Backend Developers
+
+Generate:
+
+Sprint Planning
+
+Sprint Goals
+
+Feature Assignment
+
+Dependencies
+
+Parallel Tasks
+
+Blocked Tasks
+
+Critical Path
+
+Weekly Timeline
+
+Daily Deliverables
+
+Expected Completion
+
+Risk Analysis
+
+====================================================
+PHASE 9
+TASK DISTRIBUTION
+====================================================
+
+Distribute work between:
+
+Backend Developer A
+
+Backend Developer B
+
+Backend Developer C
+
+For every developer include:
+
+Owned Modules
+
+Estimated Hours
+
+Dependencies
+
+Required Reviews
+
+Expected Merge Dates
+
+====================================================
+PHASE 10
+GIT WORKFLOW
+====================================================
+
+Design the Git strategy.
+
+Include:
+
+Branch Naming
+
+Commit Convention
+
+Pull Request Template
+
+Review Checklist
+
+Merge Rules
+
+Release Strategy
+
+Hotfix Strategy
+
+Tagging
+
+Semantic Versioning
+
+====================================================
+PHASE 11
+ENGINEERING RULES
+====================================================
+
+Create professional engineering rules.
+
+Examples:
+
+No direct pushes to main
+
+Minimum reviewers
+
+Required CI checks
+
+Passing tests required
+
+Lint required
+
+Type checking required
+
+Swagger updated
+
+Migration reviewed
+
+Documentation updated
+
+Unit tests mandatory
+
+Feature flags
+
+Backward compatibility
+
+====================================================
+PHASE 12
+ABSENCE POLICY
+====================================================
+
+Design a policy for when a developer is absent.
+
+Include:
+
+Daily standups
+
+Task ownership
+
+Backup developer
+
+Reassignment rules
+
+Maximum blocking time
+
+Escalation process
+
+Partial implementation policy
+
+Emergency merge policy
+
+PR ownership transfer
+
+Knowledge sharing
+
+Documentation requirements
+
+====================================================
+PHASE 13
+QA STRATEGY
+====================================================
+
+Testing levels
+
+Unit Testing
+
+Integration Testing
+
+API Testing
+
+Regression
+
+Performance
+
+Security
+
+Smoke Testing
+
+Acceptance Testing
+
+Test Coverage
+
+Bug Lifecycle
+
+====================================================
+PHASE 14
+PROJECT RISKS
+====================================================
+
+Identify:
+
+Technical Risks
+
+Business Risks
+
+Security Risks
+
+Performance Risks
+
+Deployment Risks
+
+Third-party Risks
+
+Mitigation Plan
+
+====================================================
+PHASE 15
+FINAL DELIVERABLES
+====================================================
+
+Generate:
+
+Complete PRD
+
+Technical Design Document
+
+API Specification
+
+Engineering Handbook
+
+Development Timeline
+
+Sprint Plan
+
+Task Board
+
+Risk Register
+
+Definition of Ready
+
+Definition of Done
+
+Release Checklist
+
+====================================================
+IMPORTANT RULES
+====================================================
+
+1. Never omit details.
+
+2. Use professional documentation.
+
+3. Use Markdown.
+
+4. Include tables where appropriate.
+
+5. Include Mermaid diagrams.
+
+6. Every API must have example JSON.
+
+7. Every module must have acceptance criteria.
+
+8. Every feature must include implementation tasks.
+
+9. Every sprint must contain developer assignments.
+
+10. Point out inconsistencies in requirements.
+
+11. Suggest architectural improvements whenever beneficial.
+
+12. If any requirement conflicts with another, stop and explain the conflict before continuing.
+
+13. Assume this documentation will be used by a professional software company and should be production-ready.
