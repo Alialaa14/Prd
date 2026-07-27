@@ -719,38 +719,55 @@ This distribution may shift slightly per feature, but the ownership boundaries r
 
 ---
 
-## 4. Task Distribution Among the Three Developers
+## 4. Route and Controller Split Model
 
-### Developer A
+This plan changes the ownership model from feature-by-feature to route-by-route. Each developer will work on multiple controllers and multiple routers, so the implementation is balanced and no single developer owns an entire business area.
 
-| Feature                            | Endpoints                                                                                                                                          |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| F1 Authentication & Identity       | POST /auth/register, POST /auth/login, POST /auth/otp/send, POST /auth/otp/verify, POST /auth/refresh, POST /auth/logout                           |
-| F2 User Profiles & Addresses       | GET /users/profile, PATCH /users/profile, GET /users/addresses, POST /users/addresses, PATCH /users/addresses/{id}, DELETE /users/addresses/{id}   |
-| F3 Brand Onboarding & Verification | POST /brands/register, POST /brands/{brandId}/documents, GET /brands/{brandId}/verification-status, GET /brands/{brandId}, PATCH /brands/{brandId} |
+### 4.1 Authentication and User Routes
 
-### Developer B
+| Area           | Developer A                               | Developer B                                       | Developer C                                        |
+| -------------- | ----------------------------------------- | ------------------------------------------------- | -------------------------------------------------- |
+| AuthController | POST /auth/register, POST /auth/otp/send  | POST /auth/login, POST /auth/otp/verify           | POST /auth/refresh, POST /auth/logout              |
+| UserController | GET /users/profile, POST /users/addresses | PATCH /users/profile, PATCH /users/addresses/{id} | GET /users/addresses, DELETE /users/addresses/{id} |
 
-| Feature                          | Endpoints                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| F4 Catalog & Wishlist            | GET /brands/{brandId}/categories, POST /brands/{brandId}/categories, PATCH /brands/{brandId}/categories/{catId}, DELETE /brands/{brandId}/categories/{catId}, GET /brands/{brandId}/products, POST /brands/{brandId}/products, PATCH /brands/{brandId}/products/{productId}, DELETE /brands/{brandId}/products/{productId}, GET /products/search, GET /products/{productId}, GET /users/{userId}/wishlist, POST /users/{userId}/wishlist, DELETE /users/{userId}/wishlist/{itemId} |
-| F5 Cart & Checkout               | GET /users/{userId}/cart, POST /users/{userId}/cart/items, PATCH /users/{userId}/cart/items/{itemId}, DELETE /users/{userId}/cart/items/{itemId}, POST /users/{userId}/checkout                                                                                                                                                                                                                                                                                                    |
-| F6 Orders, Reviews & Fulfillment | GET /users/{userId}/orders, GET /users/{userId}/orders/{orderId}, GET /users/{userId}/orders/{orderId}/tracking, GET /brands/{brandId}/orders, PATCH /brands/{brandId}/orders/{orderId}/accept, PATCH /brands/{brandId}/orders/{orderId}/reject, PATCH /brands/{brandId}/orders/{orderId}/handoff                                                                                                                                                                                  |
+### 4.2 Brand and Catalog Routes
 
-### Developer C
+| Area                                   | Developer A                                                      | Developer B                                                                   | Developer C                                                                                           |
+| -------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| BrandController                        | POST /brands/register, GET /brands/{brandId}/verification-status | POST /brands/{brandId}/documents, PATCH /brands/{brandId}                     | GET /brands/{brandId}, GET /brands/{brandId}/verification-status                                      |
+| CategoryController                     | GET /brands/{brandId}/categories                                 | POST /brands/{brandId}/categories                                             | PATCH /brands/{brandId}/categories/{catId}, DELETE /brands/{brandId}/categories/{catId}               |
+| ProductController                      | GET /brands/{brandId}/products                                   | POST /brands/{brandId}/products, PATCH /brands/{brandId}/products/{productId} | DELETE /brands/{brandId}/products/{productId}                                                         |
+| CatalogController / WishlistController | GET /products/search                                             | GET /products/{productId}                                                     | GET /users/{userId}/wishlist, POST /users/{userId}/wishlist, DELETE /users/{userId}/wishlist/{itemId} |
 
-| Feature                            | Endpoints                                                                                                                                                                                                                                                                                                                                                     |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| F7 Delivery & Courier Ops          | POST /delivery-companies/{id}/orders/webhook, GET /delivery-companies/{id}/orders, PATCH /delivery-companies/{id}/orders/{orderId}/assign, PATCH /delivery-companies/{id}/auto-assign-rules, GET /couriers/{id}/orders, PATCH /couriers/{id}/orders/{orderId}/status, POST /couriers/{id}/orders/{orderId}/proof, GET /delivery-companies/{id}/reconciliation |
-| F8 Payments, Payouts & Wallets     | POST /payments/intents, POST /payments/webhooks/stripe, POST /payments/webhooks/paymob, GET /brands/{brandId}/payouts, POST /admin/payouts/{payoutId}/approve                                                                                                                                                                                                 |
-| F9 Chat, Notifications & Messaging | POST /chats, GET /chats/{threadId}/messages, POST /chats/{threadId}/messages, POST /chats/{threadId}/report, GET /notifications, PATCH /notifications/{id}/read                                                                                                                                                                                               |
-| F10 Admin Governance & Trust       | GET /admin/dashboard, GET /admin/disputes, PATCH /admin/disputes/{disputeId}/resolve, GET /admin/moderation/flags, PATCH /admin/moderation/flags/{flagId}, POST /admin/ranking/override, POST /admin/sub-admins                                                                                                                                               |
+### 4.3 Cart, Checkout, and Order Routes
 
-### Fairness Notes
+| Area                                   | Developer A                        | Developer B                                                                         | Developer C                                                                                                                                                                      |
+| -------------------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CartController                         | GET /users/{userId}/cart           | POST /users/{userId}/cart/items                                                     | PATCH /users/{userId}/cart/items/{itemId}, DELETE /users/{userId}/cart/items/{itemId}                                                                                            |
+| CheckoutController                     | POST /users/{userId}/checkout      | POST /users/{userId}/checkout                                                       | POST /users/{userId}/checkout                                                                                                                                                    |
+| OrderController / BrandOrderController | GET /users/{userId}/orders         | GET /users/{userId}/orders/{orderId}, GET /users/{userId}/orders/{orderId}/tracking | GET /brands/{brandId}/orders, PATCH /brands/{brandId}/orders/{orderId}/accept, PATCH /brands/{brandId}/orders/{orderId}/reject, PATCH /brands/{brandId}/orders/{orderId}/handoff |
+| ReviewController                       | POST /products/{productId}/reviews | POST /brands/{brandId}/reviews                                                      | POST /products/{productId}/reviews, POST /brands/{brandId}/reviews                                                                                                               |
 
-- The highest-complexity endpoints are concentrated around checkout, payments, delivery handoff, and admin governance.
-- Review load is balanced by pairing each owner with another developer as reviewer.
-- Each developer owns complete endpoint slices, including tests and Swagger updates.
+### 4.4 Delivery and Payment Routes
+
+| Area                                          | Developer A                         | Developer B                                            | Developer C                                                                                                                                                                                                                                                      |
+| --------------------------------------------- | ----------------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DeliveryCompanyController / CourierController | GET /delivery-companies/{id}/orders | PATCH /delivery-companies/{id}/orders/{orderId}/assign | POST /delivery-companies/{id}/orders/webhook, PATCH /delivery-companies/{id}/auto-assign-rules, GET /couriers/{id}/orders, PATCH /couriers/{id}/orders/{orderId}/status, POST /couriers/{id}/orders/{orderId}/proof, GET /delivery-companies/{id}/reconciliation |
+| PaymentController / WebhookController         | POST /payments/intents              | POST /payments/webhooks/stripe                         | POST /payments/webhooks/paymob, GET /brands/{brandId}/payouts, POST /admin/payouts/{payoutId}/approve                                                                                                                                                            |
+
+### 4.5 Messaging and Admin Routes
+
+| Area                                    | Developer A                     | Developer B                                                     | Developer C                                                                                     |
+| --------------------------------------- | ------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| ChatController / NotificationController | POST /chats, GET /notifications | GET /chats/{threadId}/messages, POST /chats/{threadId}/messages | POST /chats/{threadId}/report, PATCH /notifications/{id}/read                                   |
+| AdminController                         | GET /admin/dashboard            | GET /admin/disputes, PATCH /admin/moderation/flags/{flagId}     | PATCH /admin/disputes/{disputeId}/resolve, POST /admin/ranking/override, POST /admin/sub-admins |
+
+### 4.6 Working Rules for This Split
+
+- Each developer must implement at least one route from every major controller group.
+- Each PR should contain small route-level changes, not a full feature package.
+- Every route must still include validation, service logic, tests, Swagger updates, and review.
+- Reviewers will rotate so that each developer reviews work from the other two developers.
 
 ---
 
@@ -869,20 +886,28 @@ This plan is optimized for a three-developer backend team that needs fast delive
 | F9. Chat, Notifications & Messaging | Threads, messages, notifications                | Developer C | P1       |    8 days |
 | F10. Admin Governance & Trust       | Disputes, moderation, ranking, sub-admins       | Developer A | P0       |   10 days |
 
-### 2.4 Task Ownership by Feature
+### 2.4 Router Ownership by Developer
 
-| Feature | Key Tasks                                                                                | Primary Owner | Reviewer    |
-| ------- | ---------------------------------------------------------------------------------------- | ------------- | ----------- |
-| F1      | Schema, Prisma models, auth validators, JWT/OTP service, routes, tests, Swagger          | Developer A   | Developer B |
-| F2      | Validation, profile/address services, routes, tests, Swagger                             | Developer A   | Developer C |
-| F3      | Brand model, document upload flow, verification rules, admin transitions, tests, Swagger | Developer A   | Developer C |
-| F4      | Category/product services, variants, media, wishlist, tests, Swagger                     | Developer B   | Developer A |
-| F5      | Cart logic, checkout orchestration, transactions, error handling, tests, Swagger         | Developer B   | Developer C |
-| F6      | Order state machine, review logic, tracking, tests, Swagger                              | Developer B   | Developer A |
-| F7      | Delivery assignment rules, proof handling, reconciliation, tests, Swagger                | Developer C   | Developer B |
-| F8      | Payment intents, webhooks, payout/wallet logic, tests, Swagger                           | Developer C   | Developer B |
-| F9      | Thread/message flow, notification dispatch, tests, Swagger                               | Developer C   | Developer A |
-| F10     | Admin scope, disputes, moderation, audit logging, tests, Swagger                         | Developer A   | Developer C |
+| Router             | Developer A                       | Developer B                   | Developer C                                      |
+| ------------------ | --------------------------------- | ----------------------------- | ------------------------------------------------ |
+| AuthRouter         | register, OTP send                | login, OTP verify             | refresh, logout                                  |
+| UserRouter         | profile read/update               | address create/update         | address list/delete                              |
+| BrandRouter        | brand register, brand public read | document upload, brand update | verification status, admin verify/reject/suspend |
+| CategoryRouter     | list categories                   | create category               | update/delete category                           |
+| ProductRouter      | list products                     | create/update product         | delete product                                   |
+| CatalogRouter      | search products                   | product detail                | wishlist list/add/remove                         |
+| CartRouter         | get cart                          | add item                      | update/remove item                               |
+| CheckoutRouter     | create checkout                   | create checkout               | create checkout                                  |
+| OrderRouter        | list user orders                  | order detail/tracking         | brand order accept/reject/handoff                |
+| ReviewRouter       | create product review             | create brand review           | review follow-up and moderation                  |
+| DeliveryRouter     | list company orders               | assign order                  | webhook, auto-assign, reconciliation             |
+| CourierRouter      | list assigned orders              | update status                 | submit proof                                     |
+| PaymentRouter      | create payment intent             | stripe webhook                | paymob webhook, payouts, approvals               |
+| ChatRouter         | create thread                     | list messages                 | send message, report thread                      |
+| NotificationRouter | list notifications                | —                             | mark as read                                     |
+| AdminRouter        | dashboard overview                | disputes and flags            | resolve disputes, ranking override, sub-admins   |
+
+This model ensures every router is shared across all three developers, with each developer owning a distinct set of endpoints inside each router.
 
 ### 2.5 Implementation Workflow
 
